@@ -44,10 +44,19 @@ const Onboarding = () => {
   const classes = useStyles();
   const history = useHistory();
 
+  {/*useState for holding the formData and the userData*/ }
+
   const [onboardingForm, setOnboardingForm] = useState({
     isFetching: true,
   });
   const [onboardingData, setOnboardingData] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+
+
+
+
+  {/* useEffect hook for getting the data from backend and save it to the useState 
+   once the component mounts*/ }
 
   useEffect(() => {
     const fetchOnboardingFormData = async () => {
@@ -61,9 +70,24 @@ const Onboarding = () => {
         setOnboardingForm((prev) => ({ ...prev, isFetching: false }));
       }
     };
-
     fetchOnboardingFormData();
   }, []);
+
+
+  const checkIsNextDisabled = () => {
+    if (!onboardingData) {
+      return true
+    }
+    const requiredFeilds = onboardingForm?.steps[currentPage - 1].filter((element) =>
+      element.required).map(element => element.name);
+    for (const feild of requiredFeilds) {
+      if (typeof onboardingData[feild] === 'undefined') {
+        return true
+      }
+    };
+    return false;
+  }
+
 
   const onInputChange = (event, type = "text") => {
     setOnboardingData((prevData) => {
@@ -75,22 +99,41 @@ const Onboarding = () => {
     });
   };
 
+
   const saveOnboarding = () => {
     history.push({
       pathname: "/home",
       state: { onboarding: true },
     });
+
   };
 
-  const renderButton = (text, onClick) => {
+  {/*Back and Next buttons functionality*/ }
+
+  const stepBackward = () => {
+    if (currentPage === 2) {
+      setCurrentPage((prevState) => prevState - 1);
+    }
+  };
+
+  const stepForward = () => {
+    if (currentPage === 1) {
+      setCurrentPage((prevState) => prevState + 1);
+    } else if (currentPage === 2) {
+      saveOnboarding();
+    }
+  };
+
+
+  const renderButton = (text, onClick, disabled = false) => {
     return (
       <Button
-        className={classes.button}
+        className={`${classes.button}`}
         type="submit"
         variant="contained"
         size="large"
         onClick={onClick}
-        disabled={false}
+        disabled={disabled}
       >
         {text}
       </Button>
@@ -104,49 +147,41 @@ const Onboarding = () => {
   return (
     <Grid container justifyContent="center">
       <Paper className={classes.container}>
-        <FormControl fullWidth className={classes.formControl}>
-          <TextInput
-            label={"First Name"}
-            name={"firstName"}
-            required={true}
-            onboardingData={onboardingData}
-            onChange={onInputChange}
-          />
-        </FormControl>
+        <>
+          <FormControl fullWidth className={classes.formControl}>
+            {onboardingForm?.steps[currentPage - 1]?.map((element, index) => element.type === 'yes-no' ? (
+              <Toggle
+                key={index}
+                label={element.label}
+                name={element.name}
+                required={element.required}
+                onChange={onInputChange}
+                onboardingData={onboardingData}
+              />
+            ) : (<TextInput
+              key={index}
+              label={element.label}
+              name={element.name}
+              required={element.required}
+              onboardingData={onboardingData}
+              onChange={onInputChange}
+            />))}
 
-        <FormControl fullWidth className={classes.formControl}>
-          <TextInput
-            label={"Bio"}
-            name={"bio"}
-            required={true}
-            onboardingData={onboardingData}
-            onChange={onInputChange}
-            textarea={true}
-          />
-        </FormControl>
+            <Typography className={classes.error}>
+              Please fill all the required fields before proceeding.
+            </Typography>
+          </FormControl>
+        </>
 
-        <FormControl fullWidth className={classes.formControl}>
-          <Toggle
-            label={"I would like to receive updates"}
-            name={"receiveUpdates"}
-            onChange={onInputChange}
-            onboardingData={onboardingData}
-          />
-        </FormControl>
 
-        <FormControl fullWidth className={classes.formControl}>
-          <Typography className={classes.error}>
-            Please fill all the required fields before proceeding.
-          </Typography>
-
-          <Grid justifyContent="space-between" container>
-            <Grid item>
-              {renderButton("Back")}
-              {renderButton("Finish", saveOnboarding)}
-              {renderButton("Next")}
-            </Grid>
+        <Grid justifyContent="space-between" container>
+          <Grid item>
+            {currentPage === 2 && renderButton("Back", stepBackward)}
+            {renderButton(
+              currentPage === 2 ? "Finish" : "Next",
+              stepForward, checkIsNextDisabled())}
           </Grid>
-        </FormControl>
+        </Grid>
       </Paper>
     </Grid>
   );

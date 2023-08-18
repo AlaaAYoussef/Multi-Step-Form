@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="0.0000" tests="3" failures="3">
+  <testsuite name="Root Suite" timestamp="2023-08-18T04:40:56" tests="0" file="cypress/integration/onboarding.spec.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Onboarding" timestamp="2023-08-18T04:40:56" tests="3" time="0.0000" failures="3">
+    <testcase name="Onboarding Display onboarding after registration" time="0.0000" classname="Display onboarding after registration">
+      <failure message="`cy.visit()` failed trying to load:
+
+http://localhost:3000/
+
+We attempted to make an http request to this URL but the request failed without a response.
+
+We received this error at the network level:
+
+  &gt; Error: connect ECONNREFUSED 127.0.0.1:3000
+
+Common situations why this would fail:
+  - you don&apos;t have internet access
+  - you forgot to run / boot your web server
+  - your web server isn&apos;t accessible
+  - you have weird network configuration settings on your computer" type="CypressError"><![CDATA[CypressError: `cy.visit()` failed trying to load:
+
+http://localhost:3000/
+
+We attempted to make an http request to this URL but the request failed without a response.
+
+We received this error at the network level:
+
+  > Error: connect ECONNREFUSED 127.0.0.1:3000
+
+Common situations why this would fail:
+  - you don't have internet access
+  - you forgot to run / boot your web server
+  - your web server isn't accessible
+  - you have weird network configuration settings on your computer
+    at http://localhost:61523/__cypress/runner/cypress_runner.js:163608:82
+    at visitFailedByErr (http://localhost:61523/__cypress/runner/cypress_runner.js:162912:12)
+    at http://localhost:61523/__cypress/runner/cypress_runner.js:163607:11
+    at tryCatcher (http://localhost:61523/__cypress/runner/cypress_runner.js:13022:23)
+    at Promise._settlePromiseFromHandler (http://localhost:61523/__cypress/runner/cypress_runner.js:10957:31)
+    at Promise._settlePromise (http://localhost:61523/__cypress/runner/cypress_runner.js:11014:18)
+    at Promise._settlePromise0 (http://localhost:61523/__cypress/runner/cypress_runner.js:11059:10)
+    at Promise._settlePromises (http://localhost:61523/__cypress/runner/cypress_runner.js:11135:18)
+    at _drainQueueStep (http://localhost:61523/__cypress/runner/cypress_runner.js:7729:12)
+    at _drainQueue (http://localhost:61523/__cypress/runner/cypress_runner.js:7722:9)
+    at Async.../../node_modules/bluebird/js/release/async.js.Async._drainQueues (http://localhost:61523/__cypress/runner/cypress_runner.js:7738:5)
+    at Async.drainQueues (http://localhost:61523/__cypress/runner/cypress_runner.js:7608:14)
+From Your Spec Code:
+    at Context.eval (http://localhost:61523/__cypress/tests?p=cypress\support\index.js:109:13)
+
+From Node.js Internals:
+  Error: connect ECONNREFUSED 127.0.0.1:3000
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1161:16)
+  ]]></failure>
+    </testcase>
+    <testcase name="Onboarding Display onboarding after registration from /register" time="0.0000" classname="Display onboarding after registration from /register">
+      <failure message="`cy.visit()` failed trying to load:
+
+http://localhost:3000/register
+
+We attempted to make an http request to this URL but the request failed without a response.
+
+We received this error at the network level:
+
+  &gt; Error: connect ECONNREFUSED 127.0.0.1:3000
+
+Common situations why this would fail:
+  - you don&apos;t have internet access
+  - you forgot to run / boot your web server
+  - your web server isn&apos;t accessible
+  - you have weird network configuration settings on your computer" type="CypressError"><![CDATA[CypressError: `cy.visit()` failed trying to load:
+
+http://localhost:3000/register
+
+We attempted to make an http request to this URL but the request failed without a response.
+
+We received this error at the network level:
+
+  > Error: connect ECONNREFUSED 127.0.0.1:3000
+
+Common situations why this would fail:
+  - you don't have internet access
+  - you forgot to run / boot your web server
+  - your web server isn't accessible
+  - you have weird network configuration settings on your computer
+    at http://localhost:61523/__cypress/runner/cypress_runner.js:163608:82
+    at visitFailedByErr (http://localhost:61523/__cypress/runner/cypress_runner.js:162912:12)
+    at http://localhost:61523/__cypress/runner/cypress_runner.js:163607:11
+    at tryCatcher (http://localhost:61523/__cypress/runner/cypress_runner.js:13022:23)
+    at Promise._settlePromiseFromHandler (http://localhost:61523/__cypress/runner/cypress_runner.js:10957:31)
+    at Promise._settlePromise (http://localhost:61523/__cypress/runner/cypress_runner.js:11014:18)
+    at Promise._settlePromise0 (http://localhost:61523/__cypress/runner/cypress_runner.js:11059:10)
+    at Promise._settlePromises (http://localhost:61523/__cypress/runner/cypress_runner.js:11135:18)
+    at _drainQueueStep (http://localhost:61523/__cypress/runner/cypress_runner.js:7729:12)
+    at _drainQueue (http://localhost:61523/__cypress/runner/cypress_runner.js:7722:9)
+    at Async.../../node_modules/bluebird/js/release/async.js.Async._drainQueues (http://localhost:61523/__cypress/runner/cypress_runner.js:7738:5)
+    at Async.drainQueues (http://localhost:61523/__cypress/runner/cypress_runner.js:7608:14)
+From Your Spec Code:
+    at Context.eval (http://localhost:61523/__cypress/tests?p=cypress\support\index.js:109:13)
+
+From Node.js Internals:
+  Error: connect ECONNREFUSED 127.0.0.1:3000
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1161:16)
+  ]]></failure>
+    </testcase>
+    <testcase name="Onboarding Elements are named" time="0.0000" classname="Elements are named">
+      <failure message="`cy.visit()` failed trying to load:
+
+http://localhost:3000/register
+
+We attempted to make an http request to this URL but the request failed without a response.
+
+We received this error at the network level:
+
+  &gt; Error: connect ECONNREFUSED 127.0.0.1:3000
+
+Common situations why this would fail:
+  - you don&apos;t have internet access
+  - you forgot to run / boot your web server
+  - your web server isn&apos;t accessible
+  - you have weird network configuration settings on your computer" type="CypressError"><![CDATA[CypressError: `cy.visit()` failed trying to load:
+
+http://localhost:3000/register
+
+We attempted to make an http request to this URL but the request failed without a response.
+
+We received this error at the network level:
+
+  > Error: connect ECONNREFUSED 127.0.0.1:3000
+
+Common situations why this would fail:
+  - you don't have internet access
+  - you forgot to run / boot your web server
+  - your web server isn't accessible
+  - you have weird network configuration settings on your computer
+    at http://localhost:61523/__cypress/runner/cypress_runner.js:163608:82
+    at visitFailedByErr (http://localhost:61523/__cypress/runner/cypress_runner.js:162912:12)
+    at http://localhost:61523/__cypress/runner/cypress_runner.js:163607:11
+    at tryCatcher (http://localhost:61523/__cypress/runner/cypress_runner.js:13022:23)
+    at Promise._settlePromiseFromHandler (http://localhost:61523/__cypress/runner/cypress_runner.js:10957:31)
+    at Promise._settlePromise (http://localhost:61523/__cypress/runner/cypress_runner.js:11014:18)
+    at Promise._settlePromise0 (http://localhost:61523/__cypress/runner/cypress_runner.js:11059:10)
+    at Promise._settlePromises (http://localhost:61523/__cypress/runner/cypress_runner.js:11135:18)
+    at _drainQueueStep (http://localhost:61523/__cypress/runner/cypress_runner.js:7729:12)
+    at _drainQueue (http://localhost:61523/__cypress/runner/cypress_runner.js:7722:9)
+    at Async.../../node_modules/bluebird/js/release/async.js.Async._drainQueues (http://localhost:61523/__cypress/runner/cypress_runner.js:7738:5)
+    at Async.drainQueues (http://localhost:61523/__cypress/runner/cypress_runner.js:7608:14)
+From Your Spec Code:
+    at Context.eval (http://localhost:61523/__cypress/tests?p=cypress\support\index.js:109:13)
+
+From Node.js Internals:
+  Error: connect ECONNREFUSED 127.0.0.1:3000
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1161:16)
+  ]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

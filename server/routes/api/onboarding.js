@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { User } = require("../../db/models");
 
 const STEPS = [
   [
@@ -42,6 +43,10 @@ const STEPS = [
   ],
 ];
 
+const isUndefinedOrNull = (item) => {
+  return typeof item === 'undefined' || item === null
+}
+
 const methodNotAllowed = (req, res, next) => {
   return res.header("Allow", "GET").sendStatus(405);
 };
@@ -57,6 +62,119 @@ const getOnboarding = async (req, res, next) => {
   }
 };
 
-router.route("/").get(getOnboarding).all(methodNotAllowed);
+const isOnboardingDataSchemaValid = (payload) => {
+  if (!payload.steps || !Array.isArray(payload.steps) || Object.keys(payload).length > 1) {
+    console.log("1")
+    return false
+  }
+  for (const step of payload.steps) {
+    if (!Array.isArray(payload.steps)) {
+      console.log("2")
+      return false
+    }
+    for (const stepItem of step) {
+      const keys = Object.keys(stepItem)
+
+      if (keys.length !== 2) {
+        console.log("3")
+        console.log(keys.length)
+        return false
+      }
+      for (const key of keys) {
+        if (!["name", "value"].includes(key)) {
+          console.log("4")
+          return false
+        }
+      }
+    }
+  }
+  return true
+}
+
+const saveOnboardingDataSanitization = (req, res, next) => {
+  if (!isOnboardingDataSchemaValid(req.body)) {
+    return res.status(422).json({ error: "bad data" })
+  }
+  return next()
+}
+const validateOnboardingSteps = (steps) => {
+  const preparedSteps = []
+  for (const step of steps) {
+    const preparedStep = step.reduce((acc, item) => {
+      acc[item.name] = item.value
+      return acc
+    }, {})
+    preparedSteps.push(preparedStep)
+  }
+
+  return STEPS.map((schemaStep, index) => {
+    const step = preparedSteps[index]
+    if (!step) {
+      return `Missing Step Number ${index + 1}`
+    }
+
+
+    const stepErrors = schemaStep.map((schemaStepItem) => {
+      const isRequired = schemaStepItem.required
+      const value = step[schemaStepItem.name]
+      const isValueExist = !isUndefinedOrNull(value)
+      if (isRequired && !isValueExist) {
+        return `${schemaStepItem.name} Is Missing`
+      }
+
+      if (!isValueExist) {
+        return;
+      }
+      if (schemaStepItem.type === 'yes-no') {
+        if (typeof value !== 'boolean') {
+          return `${schemaStepItem.name} Is Not Boolean`
+        }
+        return;
+      }
+      if (typeof value !== 'string') {
+        return `${schemaStepItem.name} Is Not String`
+      }
+    })
+    return stepErrors.filter(Boolean).join(" , ")
+  }).filter(Boolean).join(" , ")
+}
+
+const saveOnboarding = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "unauthorized" })
+    }
+    if (req.user.completedOnboarding) {
+      return res.status(405).json({ error: "onboarding already completed" })
+    }
+    const validationError = validateOnboardingSteps(req.body.steps)
+    if (validationError) {
+      return res.status(422).json({ error: validationError })
+    }
+    const authenticatedUser = req.user
+    const updateData = req.body.steps.reduce((parentAcc, step) => {
+      const preparedStep = step.reduce((acc, item) => {
+        acc[item.name] = item.value
+        return acc
+      }, {})
+
+      return { ...preparedStep, ...parentAcc }
+
+    }, {})
+    updateData.completedOnboarding = true
+    Object.assign(authenticatedUser, updateData)
+    await authenticatedUser.save()
+    const responsePayload = authenticatedUser.dataValues;
+    delete responsePayload.password
+    return res.status(200).json({ ...responsePayload });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+
+router.route("/").get(getOnboarding).post(saveOnboardingDataSanitization, saveOnboarding).all(methodNotAllowed);
 
 module.exports = router;
