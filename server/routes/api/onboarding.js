@@ -66,7 +66,7 @@ const isValidFieldName = (feildValue) => {
 
   const alphanumericRegex = /^[a-zA-Z0-9]+$/;
 
-  if (typeof feildName !== "string") {
+  if (typeof feildValue !== "string") {
     return false;
   }
   return alphanumericRegex.test(feildValue);
@@ -91,6 +91,9 @@ const isOnboardingDataSchemaValid = (payload) => {
         if (!["name", "value"].includes(key)) {
           return false
         }
+      }
+      if (!isValidFieldName(stepItem.name)) {
+        return false;
       }
     }
   }
@@ -165,9 +168,6 @@ const saveOnboarding = async (req, res, next) => {
       return { ...preparedStep, ...parentAcc }
 
     }, {})
-    if (!isValidFieldName(updateData.username)) {
-      return false;
-    }
     updateData.completedOnboarding = true
     Object.assign(authenticatedUser, updateData)
     await authenticatedUser.save()
