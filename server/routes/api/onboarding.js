@@ -92,9 +92,13 @@ const isOnboardingDataSchemaValid = (payload) => {
           return false
         }
       }
-      if (!isValidFieldName(stepItem.name)) {
-        return false;
-      }
+    }
+  }
+  const fieldNames = STEPS.flatMap(step => step.map(field => field.name));
+  const sentStepsNames = payload.steps.flatMap(step => step.map(field => field.name))
+  for (const sentFieldName of sentStepsNames) {
+    if (!fieldNames.includes(sentFieldName)) {
+      return false;
     }
   }
   return true
