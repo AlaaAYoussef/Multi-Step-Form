@@ -62,6 +62,19 @@ const getOnboarding = async (req, res, next) => {
   }
 };
 
+const isValidFieldName = (feildName) => {
+
+  const alphanumericRegex = /^[a-zA-Z0-9]+$/;
+
+  if (typeof feildName !== "string") {
+    return false;
+  }
+
+  return alphanumericRegex.test(alphanumericRegex);
+
+}
+
+
 const isOnboardingDataSchemaValid = (payload) => {
   if (!payload.steps || !Array.isArray(payload.steps) || Object.keys(payload).length > 1) {
     return false
@@ -73,13 +86,16 @@ const isOnboardingDataSchemaValid = (payload) => {
     for (const stepItem of step) {
       const keys = Object.keys(stepItem)
 
-      if (keys.length !== 2 || !keys.includes("name") || !keys.includes("value")) {
+      if (keys.length !== 2) {
         return false
       }
       for (const key of keys) {
         if (!["name", "value"].includes(key)) {
           return false
         }
+      }
+      if (!isValidFieldName(stepItem.name)) {
+        return false;
       }
     }
   }
