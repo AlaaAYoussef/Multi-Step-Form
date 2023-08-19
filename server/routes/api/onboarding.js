@@ -64,25 +64,20 @@ const getOnboarding = async (req, res, next) => {
 
 const isOnboardingDataSchemaValid = (payload) => {
   if (!payload.steps || !Array.isArray(payload.steps) || Object.keys(payload).length > 1) {
-    console.log("1")
     return false
   }
   for (const step of payload.steps) {
     if (!Array.isArray(payload.steps)) {
-      console.log("2")
       return false
     }
     for (const stepItem of step) {
       const keys = Object.keys(stepItem)
 
-      if (keys.length !== 2) {
-        console.log("3")
-        console.log(keys.length)
+      if (keys.length !== 2 || !keys.includes("name") || !keys.includes("value")) {
         return false
       }
       for (const key of keys) {
         if (!["name", "value"].includes(key)) {
-          console.log("4")
           return false
         }
       }
@@ -112,7 +107,6 @@ const validateOnboardingSteps = (steps) => {
     if (!step) {
       return `Missing Step Number ${index + 1}`
     }
-
 
     const stepErrors = schemaStep.map((schemaStepItem) => {
       const isRequired = schemaStepItem.required
@@ -171,8 +165,6 @@ const saveOnboarding = async (req, res, next) => {
     next(error);
   }
 };
-
-
 
 
 router.route("/").get(getOnboarding).post(saveOnboardingDataSanitization, saveOnboarding).all(methodNotAllowed);
