@@ -166,6 +166,10 @@ const Onboarding = () => {
               onboardingData={onboardingData}
               onChange={onInputChange}
             />))}
+
+            <Typography className={classes.error}>
+              Please fill all the required fields before proceeding.
+            </Typography>
           </FormControl>
         </>
 

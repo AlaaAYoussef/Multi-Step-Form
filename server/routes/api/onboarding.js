@@ -93,7 +93,7 @@ const isOnboardingDataSchemaValid = (payload) => {
 
 const saveOnboardingDataSanitization = (req, res, next) => {
   if (!isOnboardingDataSchemaValid(req.body)) {
-    return res.status(400).json({ error: "bad data" })
+    return res.status(422).json({ error: "bad data" })
   }
   return next()
 }
@@ -149,7 +149,7 @@ const saveOnboarding = async (req, res, next) => {
     }
     const validationError = validateOnboardingSteps(req.body.steps)
     if (validationError) {
-      return res.status(400).json({ error: validationError })
+      return res.status(422).json({ error: validationError })
     }
     const authenticatedUser = req.user
     const updateData = req.body.steps.reduce((parentAcc, step) => {
