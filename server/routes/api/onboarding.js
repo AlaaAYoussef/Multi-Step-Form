@@ -62,6 +62,18 @@ const getOnboarding = async (req, res, next) => {
   }
 };
 
+const isValidFieldName = (feildValue) => {
+
+  const alphanumericRegex = /^[a-zA-Z0-9]+$/;
+
+  if (typeof feildName !== "string") {
+    return false;
+  }
+
+  return alphanumericRegex.test(feildValue);
+
+}
+
 
 const isOnboardingDataSchemaValid = (payload) => {
   if (!payload.steps || !Array.isArray(payload.steps) || Object.keys(payload).length > 1) {
@@ -82,7 +94,6 @@ const isOnboardingDataSchemaValid = (payload) => {
           return false
         }
       }
-
     }
   }
   return true
@@ -153,6 +164,9 @@ const saveOnboarding = async (req, res, next) => {
         acc[item.name] = item.value
         return acc
       }, {})
+      if (!isValidFieldName(updateData.username)) {
+        return false;
+      }
 
       return { ...preparedStep, ...parentAcc }
 
