@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const { User } = require("../../db/models");
 
 const STEPS = [
   [
@@ -47,9 +46,11 @@ const isUndefinedOrNull = (item) => {
   return typeof item === 'undefined' || item === null
 }
 
+
 const methodNotAllowed = (req, res, next) => {
   return res.header("Allow", "GET").sendStatus(405);
 };
+
 
 const getOnboarding = async (req, res, next) => {
   try {
@@ -62,16 +63,6 @@ const getOnboarding = async (req, res, next) => {
   }
 };
 
-const isValidFieldName = (feildValue) => {
-
-  const alphanumericRegex = /^[a-zA-Z0-9]+$/;
-
-  if (typeof feildValue !== "string") {
-    return false;
-  }
-  return alphanumericRegex.test(feildValue);
-
-}
 
 const isOnboardingDataSchemaValid = (payload) => {
   if (!payload.steps || !Array.isArray(payload.steps) || Object.keys(payload).length > 1) {
@@ -104,12 +95,15 @@ const isOnboardingDataSchemaValid = (payload) => {
   return true
 }
 
+
 const saveOnboardingDataSanitization = (req, res, next) => {
   if (!isOnboardingDataSchemaValid(req.body)) {
     return res.status(400).json({ error: "bad data" })
   }
   return next()
 }
+
+
 const validateOnboardingSteps = (steps) => {
   const preparedSteps = []
   for (const step of steps) {
@@ -150,6 +144,8 @@ const validateOnboardingSteps = (steps) => {
     return stepErrors.filter(Boolean).join(" , ")
   }).filter(Boolean).join(" , ")
 }
+
+
 
 const saveOnboarding = async (req, res, next) => {
   try {

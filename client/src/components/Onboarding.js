@@ -40,23 +40,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 const Onboarding = () => {
   const classes = useStyles();
   const history = useHistory();
-
-  {/*useState for holding the formData and the userData*/ }
-
   const [onboardingForm, setOnboardingForm] = useState({
     isFetching: true,
   });
   const [onboardingData, setOnboardingData] = useState();
   const [currentPage, setCurrentPage] = useState(1);
 
-
-
-
-  {/* useEffect hook for getting the data from backend and save it to the useState 
-   once the component mounts*/ }
 
   useEffect(() => {
     const fetchOnboardingFormData = async () => {
@@ -108,13 +101,13 @@ const Onboarding = () => {
 
   };
 
-  {/*Back and Next buttons functionality*/ }
 
   const stepBackward = () => {
     if (currentPage === 2) {
       setCurrentPage((prevState) => prevState - 1);
     }
   };
+
 
   const stepForward = () => {
     if (currentPage === 1) {
@@ -147,28 +140,26 @@ const Onboarding = () => {
   return (
     <Grid container justifyContent="center">
       <Paper className={classes.container}>
-        <>
-          <FormControl fullWidth className={classes.formControl}>
-            {onboardingForm?.steps[currentPage - 1]?.map((element, index) => element.type === 'yes-no' ? (
-              <Toggle
-                key={index}
-                label={element.label}
-                name={element.name}
-                required={element.required}
-                onChange={onInputChange}
-                onboardingData={onboardingData}
-              />
-            ) : (<TextInput
+        <FormControl fullWidth className={classes.formControl}>
+          {onboardingForm?.steps[currentPage - 1]?.map((element, index) => element.type === 'yes-no' ? (
+            <Toggle
               key={index}
               label={element.label}
               name={element.name}
               required={element.required}
-              onboardingData={onboardingData}
               onChange={onInputChange}
-            />))}
+              onboardingData={onboardingData}
+            />
+          ) : (<TextInput
+            key={index}
+            label={element.label}
+            name={element.name}
+            required={element.required}
+            onboardingData={onboardingData}
+            onChange={onInputChange}
+          />))}
 
-          </FormControl>
-        </>
+        </FormControl>
 
 
         <Grid justifyContent="space-between" container>
